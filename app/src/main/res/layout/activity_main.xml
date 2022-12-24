@@ -20,7 +20,7 @@
 
         <EditText
             android:id="@+id/xValue"
-            android:layout_width="50dp"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="number" />
@@ -34,12 +34,41 @@
 
         <EditText
             android:id="@+id/yValue"
-            android:layout_width="50dp"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
             android:inputType="number" />
 
+        <Button
+            android:id="@+id/ortoButton"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:text="orto" />
+
+        <Button
+            android:id="@+id/gridButton"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:text="Grid" />
+
+        <Button
+            android:id="@+id/scaleButton"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:text="scale" />
+
+        <EditText
+            android:id="@+id/yValue2"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="number" />
 
 
     </LinearLayout>
@@ -52,6 +81,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="0dp"
         android:background="@drawable/paint_set_layout" />
+
 
 
 

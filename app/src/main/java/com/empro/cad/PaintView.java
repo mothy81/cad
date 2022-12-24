@@ -9,6 +9,7 @@ import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ScrollView;
 
 
 import androidx.annotation.NonNull;
@@ -16,7 +17,7 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 
 
-public class PaintView extends View {
+public class PaintView extends ScrollView {
 
     public ArrayList<float[]> cordList = new ArrayList<>();
     public float[] singleItem = new float[4];
@@ -27,21 +28,20 @@ public class PaintView extends View {
     public float upypos;
     int i;
 
-    private Paint paint = new Paint();
+    private Paint paintLine = new Paint();
+    private Paint paintNode = new Paint();
     private Path path = new Path();
 
     public PaintView(Context context) {
         super(context);
 
-        paint.setColor(Color.GREEN);
-        paint.setStrokeWidth(5);
-        cordList.add(singleItem);
     }
     public PaintView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-        paint.setColor(Color.GREEN);
-        paint.setStrokeWidth(5);
+        paintLine.setColor(Color.BLACK);
+        paintLine.setStrokeWidth(4);
+        paintNode.setColor(Color.RED);
+        paintNode.setStrokeWidth(5);
         cordList.add(singleItem);
     }
     public PaintView(Context context, AttributeSet attrs, int defStyle) {
@@ -53,9 +53,11 @@ public class PaintView extends View {
     protected void onDraw(Canvas canvas) {
 
         if (Math.abs(downxpos-upxpos)>Math.abs(downypos-upypos)) {upypos=downypos;} else {upxpos=downxpos;}
-        canvas.drawLine(downxpos, downypos, upxpos, upypos, paint);
+        canvas.drawLine(downxpos, downypos, upxpos, upypos, paintLine);
         for (int j=0; j<cordList.size(); j++) {
-            canvas.drawLine(cordList.get(j)[0], cordList.get(j)[1], cordList.get(j)[2], cordList.get(j)[3], paint);
+            canvas.drawLine(cordList.get(j)[0], cordList.get(j)[1], cordList.get(j)[2], cordList.get(j)[3], paintLine);
+            canvas.drawCircle(cordList.get(j)[0], cordList.get(j)[1],10,paintNode);
+            canvas.drawCircle(cordList.get(j)[2], cordList.get(j)[3],10,paintNode);
         }
     }
 
