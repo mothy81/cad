@@ -8,8 +8,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -23,9 +25,7 @@ public class PaintView extends ScrollView {
 
     public Button ortoButton, gridButton, scaleButton;
 
-
     public float downxpos,downypos,upxpos,upypos,canvasWidth, canvasHeight,gridFactor, gridJump=1;
-
 
     int i,gridFlag=1, ortoFlag;
 
@@ -33,11 +33,8 @@ public class PaintView extends ScrollView {
     private Paint paintNode = new Paint();
     private Paint paintDot = new Paint();
 
-
-
     public PaintView(Context context) {
         super(context);
-
 
     }
     public PaintView(Context context, AttributeSet attrs) {
@@ -57,16 +54,12 @@ public class PaintView extends ScrollView {
         gridButton = findViewById(R.id.gridButton);
         scaleButton = findViewById(R.id.scaleButton);
 
-
-
         ;
 
     }
     public PaintView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
-
-
     @Override
     protected void onDraw(Canvas canvas) {
 
@@ -76,6 +69,7 @@ public class PaintView extends ScrollView {
         }
 
         canvas.drawLine(downxpos, downypos, upxpos, upypos, paintLine);
+
         for (int j=0; j<cordList.size(); j++) {
 
             canvas.drawLine(cordList.get(j)[0], cordList.get(j)[1], cordList.get(j)[2], cordList.get(j)[3], paintLine);
@@ -90,12 +84,13 @@ public class PaintView extends ScrollView {
             for (int k=0; k<canvasHeight/gridFactor; k++){
                 canvas.drawPoint(ii*gridFactor,k*gridFactor,paintDot);}}
 
-
-
+        drawShape(canvas);
     }
 
-
-
+    public Canvas drawShape(Canvas canvas) {
+        //TODO canvas metod;
+        return null;
+    }
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
@@ -104,14 +99,29 @@ public class PaintView extends ScrollView {
                 downxpos = event.getX();
                 downypos = event.getY();
 
+
+
             case MotionEvent.ACTION_MOVE:
+
                 upxpos = event.getX();
                 upypos = event.getY();
+                if (downxpos==upxpos&&downypos==upypos&&(event.getEventTime() - event.getDownTime() > 1000)){
+                    // TODO longClick ActionMove
+                    downxpos = Math.round(downxpos);
+                    downypos = Math.round(downypos);
+                    if (downxpos == cordList.get(0)[0] && downypos == cordList.get(0)[1]) {
+
+                    }
+
+
+                }else
+
 
                 break;
             case MotionEvent.ACTION_UP:
+
                 if (ortoFlag == 1){
-                if (Math.abs(downxpos-upxpos)>Math.abs(downypos-upypos)) {upypos=downypos;} else {upxpos=downxpos;}
+                    if (Math.abs(downxpos-upxpos)>Math.abs(downypos-upypos)) {upypos=downypos;} else {upxpos=downxpos;}
                     }
 
                 if (gridFlag == 1) {
@@ -120,11 +130,17 @@ public class PaintView extends ScrollView {
                     upypos = Math.round(upypos / gridFactor) * gridFactor;
                     upxpos = Math.round(upxpos / gridFactor) * gridFactor;
                 }
+                if (downxpos==upxpos&&downypos==upypos&&(event.getEventTime() - event.getDownTime() > 1000)){
+                    // TODO longClick UpAction
 
+
+
+                }else
+                {
                 singleItem = new float[]{downxpos, downypos, upxpos, upypos};
-
                 cordList.add(i, singleItem);
                 i++;
+                }
 
                 break;
             default:

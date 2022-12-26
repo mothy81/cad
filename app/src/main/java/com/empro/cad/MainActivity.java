@@ -32,12 +32,7 @@ public EditText xValue, yValue, gridJumpValueBox;
         setContentView(R.layout.activity_main);
         PaintView paintView = findViewById(R.id.paintView);
 
-
-
-
         ctx = getApplicationContext();
-
-
 
         gridButton = findViewById(R.id.gridButton);
         ortoButton = findViewById(R.id.ortoButton);
