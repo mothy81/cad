@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class PaintView extends ScrollView {
 
     public ArrayList<Pret> rodsList = new ArrayList<>();
-    public Pret pret = new Pret(200f,300f,800f,500f,8f,9f,2,2,false,false);
+    //public Pret pret = new Pret(200f,300f,800f,500f,8f,9f,2,2,false,false);
     public Button ortoButton, gridButton, scaleButton;
     public float downxpos,downypos,upxpos,upypos,canvasWidth, canvasHeight,gridFactor, gridJump=1;
     int i,gridFlag=1, ortoFlag;
@@ -41,7 +41,7 @@ public class PaintView extends ScrollView {
         paintInit();
         viewsInit();
 
-        rodsList.add(pret);
+       // rodsList.add(pret);
 
     }
 
@@ -155,7 +155,7 @@ public class PaintView extends ScrollView {
                         upypos = Math.round(upypos / gridFactor) * gridFactor;
                         upxpos = Math.round(upxpos / gridFactor) * gridFactor;
                     }
-                pret = new Pret(downxpos,downypos,upxpos,upypos,8f,9f,2,2,false,false);
+                Pret pret = new Pret(downxpos,downypos,upxpos,upypos,8f,9f,2,2,false,false);
                 rodsList.add(i, pret);
                 i++;
                 isLongClickPressed = false;
