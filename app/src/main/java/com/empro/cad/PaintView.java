@@ -48,7 +48,7 @@ public class PaintView extends ScrollView {
         viewsInit();
 
         cordList.add(singleItem);
-        Pret pret = new Pret(1,2f,3f,4f,5f,8f,9f,2,2);
+        Pret pret = new Pret(200f,300f,400f,500f,8f,9f,2,2,false);
         rodsList.add(pret);
 
     }
@@ -69,6 +69,8 @@ public class PaintView extends ScrollView {
             canvas.drawLine(downxpos+100, downypos+100, upxpos+100, upypos+100, paintLine);
 
         }
+
+        canvas.drawLine(rodsList.get(0).getxStart(), rodsList.get(0).getyStart(), rodsList.get(0).getxEnd(), rodsList.get(0).getyEnd(), paintLine);
 
         canvas.drawLine(downxpos, downypos, upxpos, upypos, paintLine);
 
@@ -161,11 +163,11 @@ public class PaintView extends ScrollView {
         paintLine.setColor(Color.BLACK);
         paintLine.setStrokeWidth(4);
 
-        paintNode.setColor(Color.RED);
+        paintNode.setColor(Color.BLUE);
         paintNode.setStrokeWidth(5);
 
         paintDot.setColor(Color.GRAY);
-        paintDot.setStrokeWidth(3);
+        paintDot.setStrokeWidth(4);
     }
 
     private void viewsInit() {
