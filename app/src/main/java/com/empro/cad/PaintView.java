@@ -21,6 +21,8 @@ import java.util.ArrayList;
 public class PaintView extends ScrollView {
 
     public ArrayList<float[]> cordList = new ArrayList<>();
+    public ArrayList<Pret> rodsList = new ArrayList<>();
+
     public float[] singleItem = new float[4];
 
     public Button ortoButton, gridButton, scaleButton;
@@ -28,6 +30,8 @@ public class PaintView extends ScrollView {
     public float downxpos,downypos,upxpos,upypos,canvasWidth, canvasHeight,gridFactor, gridJump=1;
 
     int i,gridFlag=1, ortoFlag;
+
+    Boolean isLongClickPressed = false;
 
     private Paint paintLine = new Paint();
     private Paint paintNode = new Paint();
@@ -39,24 +43,16 @@ public class PaintView extends ScrollView {
     }
     public PaintView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        paintLine.setColor(Color.BLACK);
-        paintLine.setStrokeWidth(4);
 
-        paintNode.setColor(Color.RED);
-        paintNode.setStrokeWidth(5);
-
-        paintDot.setColor(Color.GRAY);
-        paintDot.setStrokeWidth(3);
+        paintInit();
+        viewsInit();
 
         cordList.add(singleItem);
-
-        ortoButton = findViewById(R.id.ortoButton);
-        gridButton = findViewById(R.id.gridButton);
-        scaleButton = findViewById(R.id.scaleButton);
-
-        ;
+        Pret pret = new Pret(1,2f,3f,4f,5f,8f,9f,2,2);
+        rodsList.add(pret);
 
     }
+
     public PaintView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
@@ -64,8 +60,14 @@ public class PaintView extends ScrollView {
     protected void onDraw(Canvas canvas) {
 
 
+
         if (ortoFlag == 1){
             if (Math.abs(downxpos-upxpos)>Math.abs(downypos-upypos)) {upypos=downypos;} else {upxpos=downxpos;}
+        }
+        if (isLongClickPressed){
+            // TODO LongClickPressed Action on canvas
+            canvas.drawLine(downxpos+100, downypos+100, upxpos+100, upypos+100, paintLine);
+
         }
 
         canvas.drawLine(downxpos, downypos, upxpos, upypos, paintLine);
@@ -101,12 +103,14 @@ public class PaintView extends ScrollView {
 
 
 
+
             case MotionEvent.ACTION_MOVE:
 
                 upxpos = event.getX();
                 upypos = event.getY();
-                if (downxpos==upxpos&&downypos==upypos&&(event.getEventTime() - event.getDownTime() > 1000)){
+                if (downxpos==upxpos&&downypos==upypos&&(event.getEventTime() - event.getDownTime()) > 1000){
                     // TODO longClick ActionMove
+                    isLongClickPressed = true;
                     downxpos = Math.round(downxpos);
                     downypos = Math.round(downypos);
                     if (downxpos == cordList.get(0)[0] && downypos == cordList.get(0)[1]) {
@@ -132,7 +136,7 @@ public class PaintView extends ScrollView {
                 }
                 if (downxpos==upxpos&&downypos==upypos&&(event.getEventTime() - event.getDownTime() > 1000)){
                     // TODO longClick UpAction
-
+                    isLongClickPressed = true;
 
 
                 }else
@@ -140,6 +144,7 @@ public class PaintView extends ScrollView {
                 singleItem = new float[]{downxpos, downypos, upxpos, upypos};
                 cordList.add(i, singleItem);
                 i++;
+                isLongClickPressed = false;
                 }
 
                 break;
@@ -150,5 +155,22 @@ public class PaintView extends ScrollView {
         invalidate();
 
         return true;
+    }
+
+    private void paintInit() {
+        paintLine.setColor(Color.BLACK);
+        paintLine.setStrokeWidth(4);
+
+        paintNode.setColor(Color.RED);
+        paintNode.setStrokeWidth(5);
+
+        paintDot.setColor(Color.GRAY);
+        paintDot.setStrokeWidth(3);
+    }
+
+    private void viewsInit() {
+        ortoButton = findViewById(R.id.ortoButton);
+        gridButton = findViewById(R.id.gridButton);
+        scaleButton = findViewById(R.id.scaleButton);
     }
 }
