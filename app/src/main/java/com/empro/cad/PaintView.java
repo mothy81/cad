@@ -126,12 +126,7 @@ public class PaintView extends ScrollView {
                     ortoInit();
                 }
 
-                if (gridFlag == 1) {
-                    downxpos = Math.round(downxpos / gridFactor) * gridFactor;
-                    downypos = Math.round(downypos / gridFactor) * gridFactor;
-                    upypos = Math.round(upypos / gridFactor) * gridFactor;
-                    upxpos = Math.round(upxpos / gridFactor) * gridFactor;
-                }
+
                 if (downxpos==upxpos&&downypos==upypos){
                     // TODO Click UpAction
 
@@ -143,9 +138,10 @@ public class PaintView extends ScrollView {
                         float x=downxpos;
                         float y=downypos;
 
-                        double distanceToRod = (Math.abs((y2-y1)/(x2-x1)*x-y+(x2*y1-x1*y2)/(x2-x1)))/(Math.sqrt((y2-y1)/(x2-x1)*(y2-y1)/(x2-x1)+1));
+                        double distanceToRod = (Math.abs((y2-y1)/(x2-x1)*x-y+(x2*y1-x1*y2)/(x2-x1)))/(Math.sqrt((y2-y1)/(x2-x1)*(y2-y1)/(x2-x1+1)));
                         if (distanceToRod<25){
                             rodsList.get(i).setHighlighted(true);
+                            break;
                         }
                     }
 
@@ -153,6 +149,12 @@ public class PaintView extends ScrollView {
 
                 }else
                 {
+                    if (gridFlag == 1) {
+                        downxpos = Math.round(downxpos / gridFactor) * gridFactor;
+                        downypos = Math.round(downypos / gridFactor) * gridFactor;
+                        upypos = Math.round(upypos / gridFactor) * gridFactor;
+                        upxpos = Math.round(upxpos / gridFactor) * gridFactor;
+                    }
                 pret = new Pret(downxpos,downypos,upxpos,upypos,8f,9f,2,2,false,false);
                 rodsList.add(i, pret);
                 i++;
