@@ -9,7 +9,17 @@ public class Pret {
     float eI=1;
     float eA=1;
     int nodeTypeStart=0;
+
+    public boolean isHighlighted() {
+        return highlighted;
+    }
+
+    public void setHighlighted(boolean highlighted) {
+        this.highlighted = highlighted;
+    }
+
     int nodeTypeEnd=0;
+    boolean highlighted=false;
 
     public float getxStart() {
         return xStart;
@@ -79,7 +89,7 @@ public class Pret {
         this.nodeTypeEnd = nodeTypeEnd;
     }
 
-    public Pret (float xStart, float yStart, float xEnd, float yEnd, float eI, float eA, int nodeTypeStart, int nodeTypeEnd, boolean swichSides)
+    public Pret (float xStart, float yStart, float xEnd, float yEnd, float eI, float eA, int nodeTypeStart, int nodeTypeEnd, boolean swichSides,boolean highlighted)
     {
         this.xStart = xStart;
         this.yStart = yStart;
@@ -90,6 +100,7 @@ public class Pret {
         this.eA = eA;
         this.nodeTypeStart = nodeTypeStart;
         this.nodeTypeEnd = nodeTypeEnd;
+        this.highlighted = highlighted;
     }
 
 

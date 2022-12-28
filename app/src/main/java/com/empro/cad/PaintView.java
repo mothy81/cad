@@ -20,17 +20,11 @@ import java.util.ArrayList;
 
 public class PaintView extends ScrollView {
 
-    public ArrayList<float[]> cordList = new ArrayList<>();
     public ArrayList<Pret> rodsList = new ArrayList<>();
-
-    public float[] singleItem = new float[4];
-
+    public Pret pret = new Pret(200f,300f,800f,500f,8f,9f,2,2,false,false);
     public Button ortoButton, gridButton, scaleButton;
-
     public float downxpos,downypos,upxpos,upypos,canvasWidth, canvasHeight,gridFactor, gridJump=1;
-
     int i,gridFlag=1, ortoFlag;
-
     Boolean isLongClickPressed = false;
 
     private Paint paintLine = new Paint();
@@ -47,8 +41,6 @@ public class PaintView extends ScrollView {
         paintInit();
         viewsInit();
 
-        cordList.add(singleItem);
-        Pret pret = new Pret(200f,300f,400f,500f,8f,9f,2,2,false);
         rodsList.add(pret);
 
     }
@@ -59,26 +51,28 @@ public class PaintView extends ScrollView {
     @Override
     protected void onDraw(Canvas canvas) {
 
-
-
         if (ortoFlag == 1){
-            if (Math.abs(downxpos-upxpos)>Math.abs(downypos-upypos)) {upypos=downypos;} else {upxpos=downxpos;}
+            ortoInit();
         }
         if (isLongClickPressed){
             // TODO LongClickPressed Action on canvas
-            canvas.drawLine(downxpos+100, downypos+100, upxpos+100, upypos+100, paintLine);
-
         }
-
-        canvas.drawLine(rodsList.get(0).getxStart(), rodsList.get(0).getyStart(), rodsList.get(0).getxEnd(), rodsList.get(0).getyEnd(), paintLine);
 
         canvas.drawLine(downxpos, downypos, upxpos, upypos, paintLine);
 
-        for (int j=0; j<cordList.size(); j++) {
+        for (int j=0; j<rodsList.size(); j++) {
+            if (rodsList.get(j).isHighlighted()){
+                paintLine.setStrokeWidth(8);
+                paintLine.setColor(Color.RED);}
+            canvas.drawLine(rodsList.get(j).getxStart(), rodsList.get(j).getyStart(), rodsList.get(j).getxEnd(), rodsList.get(j).getyEnd(), paintLine);
+            canvas.drawCircle(rodsList.get(j).getxStart(), rodsList.get(j).getyStart(),10,paintNode);
+            canvas.drawCircle(rodsList.get(j).getxEnd(), rodsList.get(j).getyEnd(),10,paintNode);
+            paintLine.setStrokeWidth(5);
+            paintLine.setColor(Color.BLACK);
+            rodsList.get(j).setHighlighted(false);
 
-            canvas.drawLine(cordList.get(j)[0], cordList.get(j)[1], cordList.get(j)[2], cordList.get(j)[3], paintLine);
-            canvas.drawCircle(cordList.get(j)[0], cordList.get(j)[1],10,paintNode);
-            canvas.drawCircle(cordList.get(j)[2], cordList.get(j)[3],10,paintNode);
+
+
         }
 
         canvasWidth = getWidth();
@@ -91,6 +85,10 @@ public class PaintView extends ScrollView {
         drawShape(canvas);
     }
 
+    private void ortoInit() {
+        if (Math.abs(downxpos-upxpos)>Math.abs(downypos-upypos)) {upypos=downypos;} else {upxpos=downxpos;}
+    }
+
     public Canvas drawShape(Canvas canvas) {
         //TODO canvas metod;
         return null;
@@ -98,13 +96,11 @@ public class PaintView extends ScrollView {
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 downxpos = event.getX();
                 downypos = event.getY();
-
-
-
 
             case MotionEvent.ACTION_MOVE:
 
@@ -115,7 +111,7 @@ public class PaintView extends ScrollView {
                     isLongClickPressed = true;
                     downxpos = Math.round(downxpos);
                     downypos = Math.round(downypos);
-                    if (downxpos == cordList.get(0)[0] && downypos == cordList.get(0)[1]) {
+                    if (downxpos == rodsList.get(0).getxStart() && downypos == rodsList.get(0).getyStart()) {
 
                     }
 
@@ -127,8 +123,8 @@ public class PaintView extends ScrollView {
             case MotionEvent.ACTION_UP:
 
                 if (ortoFlag == 1){
-                    if (Math.abs(downxpos-upxpos)>Math.abs(downypos-upypos)) {upypos=downypos;} else {upxpos=downxpos;}
-                    }
+                    ortoInit();
+                }
 
                 if (gridFlag == 1) {
                     downxpos = Math.round(downxpos / gridFactor) * gridFactor;
@@ -136,15 +132,29 @@ public class PaintView extends ScrollView {
                     upypos = Math.round(upypos / gridFactor) * gridFactor;
                     upxpos = Math.round(upxpos / gridFactor) * gridFactor;
                 }
-                if (downxpos==upxpos&&downypos==upypos&&(event.getEventTime() - event.getDownTime() > 1000)){
-                    // TODO longClick UpAction
-                    isLongClickPressed = true;
+                if (downxpos==upxpos&&downypos==upypos){
+                    // TODO Click UpAction
+
+                    for (i=0; i<rodsList.size();i++) {
+                        float x1=rodsList.get(i).getxStart();
+                        float x2=rodsList.get(i).getxEnd();
+                        float y1=rodsList.get(i).getyStart();
+                        float y2=rodsList.get(i).getyEnd();
+                        float x=downxpos;
+                        float y=downypos;
+
+                        double distanceToRod = (Math.abs((y2-y1)/(x2-x1)*x-y+(x2*y1-x1*y2)/(x2-x1)))/(Math.sqrt((y2-y1)/(x2-x1)*(y2-y1)/(x2-x1)+1));
+                        if (distanceToRod<25){
+                            rodsList.get(i).setHighlighted(true);
+                        }
+                    }
+
 
 
                 }else
                 {
-                singleItem = new float[]{downxpos, downypos, upxpos, upypos};
-                cordList.add(i, singleItem);
+                pret = new Pret(downxpos,downypos,upxpos,upypos,8f,9f,2,2,false,false);
+                rodsList.add(i, pret);
                 i++;
                 isLongClickPressed = false;
                 }
