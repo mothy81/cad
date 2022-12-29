@@ -2,14 +2,11 @@ package com.empro.cad;
 
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.text.Layout;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
@@ -23,7 +20,6 @@ import java.util.ArrayList;
 public class PaintView extends ScrollView {
 
     public ArrayList<Pret> rodsList = new ArrayList<>();
-    //public Pret pret = new Pret(200f,300f,800f,500f,8f,9f,2,2,false,false);
     public Button ortoButton, gridButton, scaleButton;
     public float downxpos,downypos,upxpos,upypos,canvasWidth, canvasHeight,gridFactor, gridJump=1;
     int i,gridFlag=1, ortoFlag;
@@ -54,7 +50,7 @@ public class PaintView extends ScrollView {
     protected void onDraw(Canvas canvas) {
 
         if (ortoFlag == 1){
-            ortoInit();
+            if (Math.abs(downxpos-upxpos)>Math.abs(downypos-upypos)) {upypos=downypos;} else {upxpos=downxpos;}
         }
         if (isLongClickPressed){
             // TODO LongClickPressed Action on canvas
@@ -64,16 +60,13 @@ public class PaintView extends ScrollView {
 
         for (int j=0; j<rodsList.size(); j++) {
             if (rodsList.get(j).isHighlighted()){
-                paintLine.setStrokeWidth(8);
+                paintLine.setStrokeWidth(6);
                 paintLine.setColor(Color.RED);}
             canvas.drawLine(rodsList.get(j).getxStart(), rodsList.get(j).getyStart(), rodsList.get(j).getxEnd(), rodsList.get(j).getyEnd(), paintLine);
             canvas.drawCircle(rodsList.get(j).getxStart(), rodsList.get(j).getyStart(),10,paintNode);
             canvas.drawCircle(rodsList.get(j).getxEnd(), rodsList.get(j).getyEnd(),10,paintNode);
             paintLine.setStrokeWidth(5);
             paintLine.setColor(Color.BLACK);
-            //rodsList.get(j).setHighlighted(false);
-
-
 
         }
 
@@ -87,12 +80,9 @@ public class PaintView extends ScrollView {
         drawShape(canvas);
     }
 
-    private void ortoInit() {
-        if (Math.abs(downxpos-upxpos)>Math.abs(downypos-upypos)) {upypos=downypos;} else {upxpos=downxpos;}
-    }
-
     public Canvas drawShape(Canvas canvas) {
         //TODO canvas metod;
+        canvas.drawLine(50,50,50,200,paintDot);
         return null;
     }
 
@@ -111,29 +101,23 @@ public class PaintView extends ScrollView {
 
                 upxpos = event.getX();
                 upypos = event.getY();
-                if (downxpos==upxpos&&downypos==upypos&&(event.getEventTime() - event.getDownTime()) > 1000){
+                if (Math.abs(downxpos-upxpos)<25&&Math.abs(downypos-upypos)<25&&(event.getEventTime() - event.getDownTime())>500){
                     // TODO longClick ActionMove
                     isLongClickPressed = true;
+                    Toast.makeText(getContext(), "longClick",Toast.LENGTH_SHORT).show();
                     downxpos = Math.round(downxpos);
                     downypos = Math.round(downypos);
-                    if (downxpos == rodsList.get(0).getxStart() && downypos == rodsList.get(0).getyStart()) {
-
-                    }
-
-
+                    if (downxpos == rodsList.get(0).getxStart() && downypos == rodsList.get(0).getyStart()) {}
                 }else
-
-
                 break;
+
             case MotionEvent.ACTION_UP:
 
                 if (ortoFlag == 1){
-                    ortoInit();
+                    if (Math.abs(downxpos-upxpos)>Math.abs(downypos-upypos)) {upypos=downypos;} else {upxpos=downxpos;}
                 }
 
-
                 if (downxpos==upxpos&&downypos==upypos){
-                    // TODO Click UpAction
 
                     for (i=0; i<rodsList.size();i++) {
                         float x1=rodsList.get(i).getxStart();
@@ -158,8 +142,6 @@ public class PaintView extends ScrollView {
                             break;
                         }
                     }
-
-
 
                 }else
                 {
@@ -187,9 +169,6 @@ public class PaintView extends ScrollView {
 
     private void showAtrr() {
         eIValueBox = findViewById(R.id.eIValueBox);
-
-
-
 
     }
 
