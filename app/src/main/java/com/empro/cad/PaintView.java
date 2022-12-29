@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
@@ -30,6 +31,8 @@ public class PaintView extends ScrollView {
     private Paint paintLine = new Paint();
     private Paint paintNode = new Paint();
     private Paint paintDot = new Paint();
+
+    EditText eIValueBox;
 
     public PaintView(Context context) {
         super(context);
@@ -67,7 +70,7 @@ public class PaintView extends ScrollView {
             canvas.drawCircle(rodsList.get(j).getxEnd(), rodsList.get(j).getyEnd(),10,paintNode);
             paintLine.setStrokeWidth(5);
             paintLine.setColor(Color.BLACK);
-            rodsList.get(j).setHighlighted(false);
+            //rodsList.get(j).setHighlighted(false);
 
 
 
@@ -99,6 +102,9 @@ public class PaintView extends ScrollView {
             case MotionEvent.ACTION_DOWN:
                 downxpos = event.getX();
                 downypos = event.getY();
+                for (i=0; i<rodsList.size();i++){
+                    rodsList.get(i).setHighlighted(false);
+                }
 
             case MotionEvent.ACTION_MOVE:
 
@@ -135,10 +141,19 @@ public class PaintView extends ScrollView {
                         float y2=rodsList.get(i).getyEnd();
                         float x=downxpos;
                         float y=downypos;
+                        double dStart = Math.sqrt((x1-x)*(x1-x)+(y1-y)*(y1-y));
+                        double dEnd = Math.sqrt((x2-x)*(x2-x)+(y2-y)*(y2-y));
+                        double dLenght = Math.sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
+                        boolean inBetween=false;
+
+                        if (dStart<dLenght&&dEnd<dLenght){inBetween=true;}
 
                         double distanceToRod = (Math.abs((y2-y1)/(x2-x1)*x-y+(x2*y1-x1*y2)/(x2-x1)))/(Math.sqrt((y2-y1)/(x2-x1)*(y2-y1)/(x2-x1+1)));
-                        if (distanceToRod<25){
+                        if (x1==x2) {distanceToRod=Math.abs(x-x1);}
+                        if (y1==y2) {distanceToRod=Math.abs(y-y1);}
+                        if (distanceToRod<30&&inBetween){
                             rodsList.get(i).setHighlighted(true);
+                            showAtrr();
                             break;
                         }
                     }
@@ -167,6 +182,13 @@ public class PaintView extends ScrollView {
         invalidate();
 
         return true;
+    }
+
+    private void showAtrr() {
+        eIValueBox = findViewById(R.id.eIValueBox);
+
+
+
     }
 
     private void paintInit() {

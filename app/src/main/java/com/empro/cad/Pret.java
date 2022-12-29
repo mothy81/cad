@@ -9,6 +9,8 @@ public class Pret {
     float eI=1;
     float eA=1;
     int nodeTypeStart=0;
+    int nodeTypeEnd=0;
+    boolean highlighted=false;
 
     public boolean isHighlighted() {
         return highlighted;
@@ -17,9 +19,6 @@ public class Pret {
     public void setHighlighted(boolean highlighted) {
         this.highlighted = highlighted;
     }
-
-    int nodeTypeEnd=0;
-    boolean highlighted=false;
 
     public float getxStart() {
         return xStart;

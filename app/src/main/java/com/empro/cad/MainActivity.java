@@ -13,13 +13,12 @@ import android.widget.EditText;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-public ArrayList<int[]> cordList;
-public int[] singleItem;
+
 public int gridFlag;
 public PaintView paintView;
 Context ctx;
 
-public Button gridButton, ortoButton, scaleButton;
+public Button gridButton, ortoButton, scaleButton, delButton;
 public EditText xValue, yValue, gridJumpValueBox;
 
 
@@ -37,10 +36,22 @@ public EditText xValue, yValue, gridJumpValueBox;
         gridButton = findViewById(R.id.gridButton);
         ortoButton = findViewById(R.id.ortoButton);
         scaleButton = findViewById(R.id.scaleButton);
+        delButton = findViewById(R.id.delButton);
         gridJumpValueBox = findViewById(R.id.gridJumpValueBox);
         xValue = findViewById(R.id.xValue);
         yValue = findViewById(R.id.yValue);
         xValue.setText("15");
+
+        delButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for (int i=0; paintView.rodsList.size()>i;i++)
+                {
+                    if (paintView.rodsList.get(i).isHighlighted()){paintView.rodsList.remove(i);}
+                    paintView.invalidate();
+                }
+            }
+        });
 
         gridButton.setOnClickListener(new View.OnClickListener() {
             @Override
