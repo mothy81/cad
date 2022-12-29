@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.text.Layout;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -186,6 +187,7 @@ public class PaintView extends ScrollView {
 
     private void showAtrr() {
         eIValueBox = findViewById(R.id.eIValueBox);
+
 
 
 
