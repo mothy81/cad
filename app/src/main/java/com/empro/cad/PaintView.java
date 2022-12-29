@@ -41,8 +41,6 @@ public class PaintView extends ScrollView {
         paintInit();
         viewsInit();
 
-       // rodsList.add(pret);
-
     }
 
     public PaintView(Context context, AttributeSet attrs, int defStyle) {
